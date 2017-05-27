@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     /// ボタンタップで現在地の緯度、経度から住所、都市、国などの情報をコンソールに出力する
     @IBAction func tappedReverseGeocoding(_ sender: Any) {
         
-        guard let lat = self.latitude, let lon = self.longitude else { return }
+        guard let lat = latitude, let lon = longitude else { return }
         let geocoder = CLGeocoder()
         let location = CLLocation(latitude: lat, longitude: lon)
         
@@ -53,15 +53,15 @@ class ViewController: UIViewController {
     
     /// 緯度ラベル、経度ラベルを更新する
     fileprivate func updateLabels() {
-        latitudeLabel.text = String(format: "緯度: %@", self.latitude?.description ?? "-")
-        longitudeLabel.text = String(format: "経度: %@", self.longitude?.description ?? "-")
+        latitudeLabel.text = String(format: "緯度: %@", latitude?.description ?? "-")
+        longitudeLabel.text = String(format: "経度: %@", longitude?.description ?? "-")
     }
     
     /// 位置情報の許可状態をrestricted or deniedに変更された時の処理
     fileprivate func clearLocationValues() {
         // 許可状態変更前に取得した位置情報を使用しないようにnilをセットする
-        self.latitude = nil
-        self.longitude = nil
+        latitude = nil
+        longitude = nil
         updateLabels()
     }
 }
@@ -114,16 +114,16 @@ extension ViewController: CLLocationManagerDelegate {
     /// 位置情報が更新された時の処理
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        print("\(manager.location)")
-        print("緯度:\(manager.location?.coordinate.latitude)")
-        print("経度:\(manager.location?.coordinate.longitude)")
-        print("標高:\(manager.location?.altitude)")
-        print("タイムスタンプ:\(manager.location?.timestamp)")
-        
+        print("\(manager.location!)")
+        print("緯度:\(manager.location!.coordinate.latitude)")
+        print("経度:\(manager.location!.coordinate.longitude)")
+        print("標高:\(manager.location!.altitude)")
+        print("タイムスタンプ:\(manager.location!.timestamp)")
+
         // 前回取得時の緯度・経度情報があれば、移動距離を測定する
         if let lat = self.latitude, let lon = self.longitude {
             let previousLocation = CLLocation(latitude: lat, longitude: lon)
-            print("移動距離:\(manager.location?.distance(from: previousLocation))")
+            print("移動距離:\(manager.location!.distance(from: previousLocation))")
         }
         
         // 緯度ラベル、経度ラベルを更新する
